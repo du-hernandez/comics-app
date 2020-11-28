@@ -20,7 +20,7 @@ const MyModal = ({ comic, visible, handleOk, handleCancel }) => {
 
 const Comics = () => {
   const [ comics, setComics ] = useState([]);
-  const [ selected, setSelected ] = useState({});
+  const [ selected, setSelected ] = useState(null);
   const [ visible, setVisible ] = useState(false);
 
   useEffect(() => {
@@ -43,7 +43,7 @@ const Comics = () => {
     return (
       <>
         <div className='comic-container'>
-          <div style={{marginLeft:20, padding:20}}>
+          <div style={{ marginLeft: 20, padding: 20 }}>
             {
               comics.map(comic => {
                 const { id } = comic;
@@ -57,8 +57,28 @@ const Comics = () => {
               })
             }
           </div>
-          <div style={{padding:20, marginLeft:20, width: '200%', position:'absolute', right:-10}}>
-            <ComicCard comic={selected} />
+          <div style={{ padding: 20, marginLeft: 20, width: '200%' }}>
+            {selected && <ComicCard comic={selected} />}
+            <div style={{width:500, marginTop:100, alignItems:'center'}}>
+              <form>
+                <div style={{ display: 'flex', justifyContent:'space-between', margin:5}}>
+                  <lebel>Título</lebel>
+                  <input name='title' />
+                </div>
+                <div style={{ display: 'flex', justifyContent:'space-between', margin:5,}}>
+                  <lebel>Id</lebel>
+                  <input name='id' />
+                </div>
+                <div style={{ display: 'flex', justifyContent:'space-between', margin:5,}}>
+                  <lebel>Descripción</lebel>
+                  <input name='description' />
+                </div>
+                <div style={{ display: 'flex', justifyContent:'space-between', margin:5,}}>
+                  <lebel>Imagen</lebel>
+                  <input name='image' />
+                </div>
+              </form>
+            </div>
           </div>
         </div>
         {/* <MyModal
