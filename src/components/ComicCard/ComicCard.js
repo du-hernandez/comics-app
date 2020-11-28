@@ -10,12 +10,29 @@ import './ComicCard.css';
  * }
  */
 
-const ComicCard = ({title, id, description, thumbnail}) => {
+const ComicCard = ({
+  comic,
+  onSelect
+}) => {
+  const {
+    title,
+    id,
+    description,
+    thumbnail, } = comic;
+
+  const onClick = () => {
+    if (onSelect) {
+      onSelect(comic);
+    }
+  }
+
+  const image = `${thumbnail?.path}.${thumbnail?.extension}`;
+
   return (
-    <div className='comic-card-container'>
+    <div className='comic-card-container' onClick={onClick}>
       <div className='image'>
         <img
-          src={thumbnail || 'https://e.rpp-noticias.io/xlarge/2020/04/26/182718_933313.jpg'}
+          src={image || 'https://e.rpp-noticias.io/xlarge/2020/04/26/182718_933313.jpg'}
           alt='Comic Marvel'
           width='200px'
         />

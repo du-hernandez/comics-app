@@ -1,5 +1,7 @@
 .comic-container {
   display: flex;
-  flex-direction: row;
-  background-color: red;
+}
+
+.comic-left-content {
+  display: flex;
 }
