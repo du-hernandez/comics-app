@@ -46,7 +46,7 @@ const ComicCard = ({
         </div> */}
         {description &&
           <div>
-            <label className='label'>Descripción</label>
+            <label className='label'>Descripción:</label>
             <p className='label'>{description}</p>
           </div>
         }
