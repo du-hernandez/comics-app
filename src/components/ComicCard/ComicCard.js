@@ -1,15 +1,6 @@
 import React from 'react';
 import './ComicCard.css';
 
-/**
- * 
- * @param {
- * title
- * description
- * thumbnail
- * }
- */
-
 const ComicCard = ({
   comic,
   onSelect

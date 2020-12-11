@@ -11,7 +11,7 @@ const {SubMenu} = Menu;
 const Home = () => {
 
   const handleClick = e => {
-    console.log('clic: ', e);
+    // console.log('clic: ', e);
   }
 
   return (

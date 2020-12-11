@@ -27,15 +27,26 @@ const ManageComics = ({ children }) => {
           <Menu.Item key='1' icon={<HomeOutlined />}>
             <Button
               type='link'
+              className='btn-link'
               onClick={() => history.push('/')}
             >Home</Button>
           </Menu.Item>
           <Menu.Item
             key='2' icon={<VideoCameraOutlined />}>
-            <Button type='link' onClick={() => history.push("/comics")}>Comics</Button>
+            <Button
+              type='link'
+              className='btn-link'
+              onClick={() => history.push("/comics")}>
+              Comics
+            </Button>
           </Menu.Item>
           <Menu.Item key='3' icon={<UploadOutlined />}>
-            <Button type='link' onClick={() => history.push("/comics/manage")}>Manage comics</Button>
+            <Button
+              type='link'
+              className='btn-link'
+              onClick={() => history.push("/comics/manage")}>
+              Manage comics
+            </Button>
           </Menu.Item>
         </Menu>
       </Sider>

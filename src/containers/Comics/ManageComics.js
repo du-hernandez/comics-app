@@ -1,50 +1,31 @@
-import React, {useState} from 'react';
-import { Layout, Menu } from 'antd';
-import {
-  MenuUnfoldOutlined,
-  MenuFoldOutlined,
-  UserOutlined,
-  VideoCameraOutlined,
-  UploadOutlined,
-} from '@ant-design/icons';
+import React, { useState, useEffect } from 'react';
+import { ColumnCard } from '../../components';
+import { Api } from '../../common/api';
 import './ManageComics.css';
 
-const { Header, Sider, Content } = Layout;
-
 const ManageComics = () => {
+  const [ comics, setComics ] = useState({
+    newComics: [], reviewComics: [], approvedComics: []
+  });
+  
+  useEffect(() => {
+    Api()
+      .then(res => res.json())
+      .then(res => setComics({...comics, newComics: res.data.results}))
+      .catch(err => console.error("-----> ", err));
+    return () => {
+      // Component unmount
+    }
+  }, []);
 
-  const [ collapsed, setCollapsed ] = useState(false);
-
-  const toggle = () => setCollapsed(!collapsed);
+  console.log("comics: ", comics);
 
   return (
-    <Layout>
-      <Sider trigger={null} collapsible collapsed={collapsed} theme='light'>
-        <div className='logo' />
-        <Menu theme='light' mode='inline' defaultOpenKeys={[ '1' ]}>
-          <Menu.Item key='1' icon={<UserOutlined />}>Nav 1</Menu.Item>
-          <Menu.Item key='2' icon={<VideoCameraOutlined/>}>Nav 2</Menu.Item>
-          <Menu.Item key='3' icon={<UploadOutlined/>}>Nav 3</Menu.Item>
-        </Menu>
-      </Sider>
-      <Layout className='site-layout'>
-        <Header className='site-layout-background' style={{ padding: 0 }}>
-          {React.createElement(collapsed ? MenuUnfoldOutlined : MenuFoldOutlined, {
-            className: 'trigger',
-            onClick: toggle,
-          })}
-        </Header>
-        <Content className='site-layout-background'
-          style={{
-            margin: '24px, 16px',
-            padding: 24,
-            minHeight: 280
-          }}
-        >
-          Content
-        </Content>
-      </Layout>
-    </Layout>
+    <div className='manage-container'>
+      <ColumnCard comics={comics.newComics} title='NUEVOS COMICS' />
+      <ColumnCard comics={[]} title='EN REVISIÓN' />
+      <ColumnCard comics={[]} title='APROVADOS' />
+    </div>
   );
 }
 

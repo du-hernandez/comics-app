@@ -28,3 +28,8 @@
 .site-layout .site-layout-background {
   background: #fff;
 }
+
+.btn-link {
+  width: auto;
+  text-align: left;
+}

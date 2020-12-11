@@ -1,20 +1,13 @@
 import React, {useEffect, useState} from 'react';
 import { Api } from '../../common/api';
 import * as validation from './validations';
-
 import {
   Form,
   Input,
   InputNumber,
-  Button,
-  // Radio,
-  // Select,
-  // Cascader,
-  // DatePicker,
-  // TreeSelect,
-  // Switch,
-  // Modal
+  Button
 } from 'antd';
+import { useHistory } from 'react-router-dom';
 
 import { ComicCard } from '../../components';
 import './Comics.css';
@@ -22,25 +15,18 @@ import './Comics.css';
 const Comics = () => {
   const [ comics, setComics ] = useState([]);
   const [ selected, setSelected ] = useState(null);
-  // const [ visible, setVisible ] = useState(false);
-  const [newComics, setNewComics] = useState([]);
-
-  // const [ inputs, setInputs ] = useState({
-  //   id: '',
-  //   title: '',
-  //   description: '',
-  //   thumbnail: {
-  //     path: '',
-  //     extension:''
-  //   },
-  // });
+  const [ newComics, setNewComics] = useState([]);
 
   useEffect(() => {
+  // console.log("useEffect");
+
     Api()
       .then(res => res.json())
       .then(res => setComics(res.data.results))
       .catch(err => console.error("-----> ", err));
   }, []);
+
+  const history = useHistory();
 
   const layout = {
     labelCol: { span: 8 },
@@ -48,47 +34,19 @@ const Comics = () => {
   };
 
   const onFinish = values => {
-    console.log('values: ', values);
     setNewComics([...newComics, {...values}]);
   };
 
   const onFinishFailed = res => {
-    console.log(res);
+    // console.log(res);
   }
 
-  // const handleOk = () => setVisible(false);
-
-  // const handleCancel = () => setVisible(false);
-
   const handleComicSelect = comic => {
+    // console.log("handleComicSelect");
     setSelected(comic);
-    // setVisible(true);
   };
 
-  // const onChange = e => {
-  //   if (e.target.name === 'path' || e.target.name === 'extension') {
-  //     setInputs({
-  //       ...inputs,
-  //       thumbnail: {
-  //         ...inputs.thumbnail,
-  //         [ e.target.name ]: e.target.value
-  //       },
-  //     })
-  //   } else {
-  //     setInputs({
-  //       ...inputs,
-  //       [ e.target.name ]: e.target.value,
-  //     })
-  //   }
-  // }
-
-  // const save = () => {
-  //   setNewComics(
-  //     [ ...newComics,
-  //       { ...inputs }
-  //     ]
-  //   )
-  // }
+  // console.log('General')
   
   if (comics.length > 0) {
     return (
@@ -112,8 +70,6 @@ const Comics = () => {
           <div style={{ width: 500, marginTop: 100, alignItems: 'center' }}>
             <Form
               {...layout}
-              // labelCol={{ span: 8 }}
-              // wrapperCol={{ span: 16 }}
               name="new-comic"
               onFinish={onFinish}
               onFinishFailed={onFinishFailed}
@@ -155,6 +111,13 @@ const Comics = () => {
                 </Button>
               </Form.Item>
             </Form>
+          </div>
+          <div style={{ display: 'flex', justifyContent: 'flex-end' }}>
+            <Button
+              type='ghos'
+              onClick={() => history.push('/comics/manage', {newComics})}
+            >Manage comics
+            </Button>
           </div>
         </div>
       </div>
