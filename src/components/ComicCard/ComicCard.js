@@ -1,15 +1,37 @@
 import React from 'react';
+import { Button } from 'antd';
 import './ComicCard.css';
+
+/**
+ * NEW
+ * REVIEW
+ * APPROVED
+ */
 
 const ComicCard = ({
   comic,
-  onSelect
+  onSelect,
+  state = 'NEW',
 }) => {
-  const {
-    title,
-    id,
-    description,
-    thumbnail, } = comic;
+  const { title, id, description, thumbnail, } = comic;
+  
+  let message = 'A revisar';
+  let buttonType = 'default';
+
+  switch (state) {
+    case 'REVIEW':
+      buttonType = 'primary';
+      message = 'Añadir a lista';
+      break;
+    case 'APPROVED':
+      message = 'Completado';
+      buttonType = 'text';
+      break;
+    default:
+      message = 'Sin estado';
+      buttonType = 'text';
+      break;
+  }
 
   const onClick = () => {
     if (onSelect) {
@@ -42,6 +64,11 @@ const ComicCard = ({
           </div>
         }
       </div>
+      {onSelect && (
+        <Button type={buttonType} onClick={onClick}>
+          {message}
+        </Button>
+      )}
     </div>
   );
 }

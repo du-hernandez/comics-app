@@ -11,20 +11,56 @@ const ManageComics = () => {
   useEffect(() => {
     Api()
       .then(res => res.json())
-      .then(res => setComics({...comics, newComics: res.data.results}))
+      .then(res => setComics({ ...comics, newComics: res.data.results }))
       .catch(err => console.error("-----> ", err));
     return () => {
       // Component unmount
     }
   }, []);
 
-  console.log("comics: ", comics);
+  const handleSelect = comic => {
+    switch (comic.state) {
+      case 'NEW':
+        comic.state = 'REVIEW';
+        setComics({
+          ...comics,
+          newComics: comics.newComics.filter(i => i.id !== comic.id),
+          reviewComics: [ ...comics.reviewComics, comic ]
+        });
+        return comic;
+      case 'REVIEW':
+        comic.state = 'APPROVED';
+        return comic;
+      case 'APPROVED':
+      //   comic.state = '';
+        return comic;
+      default:
+        comic.state = '';
+        return comic;
+    }
+  }
+
+  const assignState = (otherComics, state) => (
+    otherComics.map(i => ({ ...i, state }))
+  );
 
   return (
     <div className='manage-container'>
-      <ColumnCard comics={comics.newComics} title='NUEVOS COMICS' />
-      <ColumnCard comics={[]} title='EN REVISIÓN' />
-      <ColumnCard comics={[]} title='APROVADOS' />
+      <ColumnCard
+        comics={assignState(comics.newComics, 'NEW')}
+        onSelect={handleSelect}
+        title='NUEVOS COMICS'
+      />
+      <ColumnCard
+        comics={assignState(comics.reviewComics, 'REVIEW')}
+        onSelect={handleSelect}
+        title='EN REVISIÓN'
+      />
+      <ColumnCard
+        comics={assignState(comics.approvedComics, 'APPROVED')}
+        onSelect={handleSelect}
+        title='APROVADOS'
+      />
     </div>
   );
 }
