@@ -11,21 +11,20 @@ import './ComicCard.css';
 const ComicCard = ({
   comic,
   onSelect,
-  state = 'NEW',
 }) => {
   const { title, id, description, thumbnail, } = comic;
   
   let message = 'A revisar';
   let buttonType = 'default';
 
-  switch (state) {
+  switch (comic.state) {
     case 'REVIEW':
       buttonType = 'primary';
       message = 'Añadir a lista';
       break;
     case 'APPROVED':
-      message = 'Completado';
-      buttonType = 'text';
+      message = 'Volver';
+      buttonType = 'ghost';
       break;
     default:
       message = 'Sin estado';
@@ -42,7 +41,7 @@ const ComicCard = ({
   const image = `${thumbnail?.path}.${thumbnail?.extension}`;
 
   return (
-    <div className='comic-card-container' onClick={onClick}>
+    <div className='comic-card-container'>
       <div className='image'>
         <img
           src={image || 'https://e.rpp-noticias.io/xlarge/2020/04/26/182718_933313.jpg'}

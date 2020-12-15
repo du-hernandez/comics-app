@@ -27,16 +27,26 @@ const ManageComics = () => {
           newComics: comics.newComics.filter(i => i.id !== comic.id),
           reviewComics: [ ...comics.reviewComics, comic ]
         });
-        return comic;
+        break;
       case 'REVIEW':
         comic.state = 'APPROVED';
-        return comic;
+        setComics({
+          ...comics,
+          reviewComics: comics.reviewComics.filter(i => i.id !== comic.id),
+          approvedComics: [ ...comics.approvedComics, comic ]
+        });
+        break;
       case 'APPROVED':
-      //   comic.state = '';
-        return comic;
+      comic.state = 'REVIEW';
+        setComics({
+          ...comics,
+          approvedComics: comics.approvedComics.filter(i => i.id !== comic.id),
+          reviewComics: [ comic, ...comics.reviewComics ]
+        });
+        break;
       default:
         comic.state = '';
-        return comic;
+        break;
     }
   }
 

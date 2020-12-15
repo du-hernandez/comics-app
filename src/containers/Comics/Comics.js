@@ -8,18 +8,31 @@ import {
   Button
 } from 'antd';
 import { useHistory } from 'react-router-dom';
-
 import { ComicCard } from '../../components';
 import './Comics.css';
 
+import { useSelector, useDispatch, shallowEqual } from 'react-redux';
+import * as ComicsTypes from '../../services/comics/comicTypes';
+
 const Comics = () => {
-  const [ comics, setComics ] = useState([]);
+  const [ comicss, setComics ] = useState([]);
   const [ selected, setSelected ] = useState(null);
-  const [ newComics, setNewComics] = useState([]);
+  const [ newComics, setNewComics ] = useState([]);
+  
+  const { comics } = useSelector(state => state.comics);
+  
+  const dispatch = useDispatch();
+
+
+   console.log('comic', comics)
 
   useEffect(() => {
   // console.log("useEffect");
-
+    dispatch({
+      type: ComicsTypes.GET_COMICS,
+      payload: {comic: {id:1, name: 'assad'}}
+    })
+    
     Api()
       .then(res => res.json())
       .then(res => setComics(res.data.results))
