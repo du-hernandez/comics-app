@@ -1,7 +1,6 @@
 import { takeLatest, all, put } from 'redux-saga/effects';
 import * as ComicsTypes from './comicTypes';
 import {Api } from '../../common/api';
-import Comics from '../../containers/Comics/Comics';
 
 const fetchComics = async () => await Api()
   .then(res => res.json())
@@ -10,11 +9,8 @@ const fetchComics = async () => await Api()
     return err;
   });
 
-
 function* getComics(action) {
-  console.log('Llega')
   const response = yield fetchComics();
-  console.log(response);
 
   if (response) {
     yield put({
@@ -39,5 +35,3 @@ function* actionWatcher() {
 export default function* comicsSaga() {
   yield all([ actionWatcher() ]);
 }
-
-
