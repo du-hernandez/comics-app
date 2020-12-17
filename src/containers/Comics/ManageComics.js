@@ -2,11 +2,19 @@ import React, { useState, useEffect } from 'react';
 import { ColumnCard } from '../../components';
 import { Api } from '../../common/api';
 import './ManageComics.css';
+import { useSelector, useDispatch, shallowEqual } from "react-redux";
 
 const ManageComics = () => {
   const [ comics, setComics ] = useState({
     newComics: [], reviewComics: [], approvedComics: []
   });
+
+  const { newComics, loading, comicSelected } = useSelector(
+    (state) => state.comics,
+    shallowEqual
+  );
+
+  console.log(newComics)
   
   useEffect(() => {
     Api()
@@ -57,7 +65,7 @@ const ManageComics = () => {
   return (
     <div className='manage-container'>
       <ColumnCard
-        comics={assignState(comics.newComics, 'NEW')}
+        comics={newComics}
         onSelect={handleSelect}
         title='NUEVOS COMICS'
       />

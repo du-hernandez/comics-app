@@ -10,9 +10,14 @@ const fetchComics = async () => await Api()
   });
 
 function* getComics(action) {
+  // const { payload } = action;
   const response = yield fetchComics();
 
   if (response) {
+    // yield put({
+    //   type: ComicsTypes.GET_FILMS,
+    //   payload: {}
+    // })
     yield put({
       type: ComicsTypes.GET_COMICS_SUCCESS,
       payload: {comics: response.data.results},
@@ -30,6 +35,7 @@ function* getComics(action) {
 
 function* actionWatcher() {
   yield takeLatest(ComicsTypes.GET_COMICS, getComics);
+  // yield takeLatest(ComicsTypes.GET_FILMS, getFilms);
 }
 
 export default function* comicsSaga() {

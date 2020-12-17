@@ -27,7 +27,7 @@ const ComicCard = ({
       buttonType = 'ghost';
       break;
     default:
-      message = 'Sin estado';
+      message = 'Seleccionar';
       buttonType = 'text';
       break;
   }
