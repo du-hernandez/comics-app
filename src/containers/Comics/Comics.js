@@ -8,6 +8,7 @@ import "./Comics.css";
 
 import { useSelector, useDispatch, shallowEqual } from "react-redux";
 import * as ComicsTypes from "../../services/comics/comicTypes";
+import {comicActions} from '../../services/comics/comicSlice'
 
 import { selectUpdatedComis } from './selector';
 
@@ -22,9 +23,7 @@ const Comics = () => {
   const dispatch = useDispatch();
 
   useEffect(() => {
-    dispatch({
-      type: ComicsTypes.GET_COMICS,
-    });
+    dispatch(comicActions.getComics());
   }, []);
 
       const history = useHistory();
