@@ -9,11 +9,15 @@ import "./Comics.css";
 import { useSelector, useDispatch, shallowEqual } from "react-redux";
 import * as ComicsTypes from "../../services/comics/comicTypes";
 
+import { selectUpdatedComis } from './selector';
+
 const Comics = () => {
-  const { comics, loading, comicSelected, newComics } = useSelector(
-    (state) => state.comics,
-    shallowEqual
-  );
+  const { 
+    comics, 
+    loading, 
+    comicSelected, 
+    newComics
+  } = useSelector(selectUpdatedComis(), shallowEqual);
 
   const dispatch = useDispatch();
 
@@ -23,7 +27,7 @@ const Comics = () => {
     });
   }, []);
 
-  const history = useHistory();
+      const history = useHistory();
 
   const layout = {
     labelCol: { span: 8 },
