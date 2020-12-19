@@ -2,7 +2,7 @@ export const schema = {
   title: [ {
     required: true,
     min: 3,
-    max: 20
+    max: 100
   } ],
   id: [ {
     required: true,
@@ -13,7 +13,7 @@ export const schema = {
   description: [ {
     required: true,
     min: 3,
-    max: 50
+    max: 1000
   } ],
   path: [ {
     required: true,

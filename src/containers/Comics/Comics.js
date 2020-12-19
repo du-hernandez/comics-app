@@ -6,11 +6,10 @@ import { useHistory } from "react-router-dom";
 import { ComicCard } from "../../components";
 import "./Comics.css";
 
-import { useSelector, useDispatch, shallowEqual } from "react-redux";
-import * as ComicsTypes from "../../services/comics/comicTypes";
-import { comicActions } from '../../services/comics/comicSlice'
+import { useSelector, useDispatch, shallowEqual } from "react-redux"
 
-import { selectUpdatedComis } from './selector';
+import { selectUpdatedComis } from './selector'
+import { comicActions } from "../../services/comics/comicSlice";
 
 const Comics = () => {
   const {
@@ -30,22 +29,17 @@ const Comics = () => {
   };
 
   const onFinish = (comic) => {
-    dispatch({
-      type: ComicsTypes.ADD_COMIC,
-      payload: { comic }
-    });
-  };
+    dispatch(comicActions.addComic(comic))
+  }
 
-  const onFinishFailed = (res) => {
-    // console.log(res);
-  };
-
-  const handleComicSelect = (comic) => (
-    dispatch({
-      type: ComicsTypes.SELECT_COMIC,
-      payload: { comic }
-    })
-  )
+  const handleComicSelect = (comic) => {
+    /* (
+      dispatch({
+        type: ComicsTypes.SELECT_COMIC,
+        payload: { comic }
+      })
+    )
+   */}
 
   return (
     <div className="comic-container">
@@ -53,7 +47,7 @@ const Comics = () => {
         {comics?.approvedComics.map((comic) => {
           const { id } = comic;
           return (
-            <ComicCard key={id} comic={comic} onSelect={handleComicSelect} />
+            <ComicCard key={id} comic={{ ...comic, state: 'APPROVED' }} onSelect={handleComicSelect} />
           );
         })}
       </div>
@@ -64,7 +58,6 @@ const Comics = () => {
             {...layout}
             name="new-comic"
             onFinish={onFinish}
-            onFinishFailed={onFinishFailed}
             validateMessages={validation.messages}
           >
             <Form.Item
