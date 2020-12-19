@@ -1,6 +1,6 @@
 import { takeLatest, all, put } from 'redux-saga/effects';
 import { Api } from '../../common/api';
-import {comicActions} from './comicSlice'
+import { comicActions } from './comicSlice'
 
 const fetchComics = async () => await Api()
   .then(res => res.json())
@@ -9,21 +9,18 @@ const fetchComics = async () => await Api()
     return err;
   });
 
-function* getComics(action) {
-  // const { payload } = action;
+function* getComics() {
   const response = yield fetchComics();
 
   if (response) {
-    // yield put({
-    //   type: ComicsTypes.GET_FILMS,
-    //   payload: {}
-    // })
-    yield put(comicActions.getComicsSuccess(response.data.results));
+    const data = {
+      newComics: response.data.results,
+      reviewComics: [],
+      approvedComics: []
+    }
+    yield put(comicActions.setComics(data))
   } else {
-    yield put(comicActions.getComicsFail( {
-        codigo: '',
-        message: ''
-      }))
+    yield put(comicActions.getComicsFail({ codigo: '', message: '' }))
   }
 }
 
@@ -33,5 +30,5 @@ function* actionWatcher() {
 }
 
 export default function* comicsSaga() {
-  yield all([ actionWatcher() ]);
+  yield all([actionWatcher()]);
 }

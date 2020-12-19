@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useState, useEffect} from 'react';
 import { Layout, Menu, Button } from 'antd';
 import {
   MenuUnfoldOutlined,
@@ -9,6 +9,8 @@ import {
 } from '@ant-design/icons';
 import './Master.css';
 import { useHistory } from 'react-router-dom';
+import { useDispatch } from 'react-redux';
+import { comicActions } from '../services/comics/comicSlice';
 
 const { Header, Sider, Content } = Layout;
 
@@ -18,6 +20,13 @@ const ManageComics = ({ children }) => {
   let history = useHistory();
 
   const toggle = () => setCollapsed(!collapsed);
+
+
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    dispatch(comicActions.getComics());
+  }, []);
 
   return (
     <Layout>

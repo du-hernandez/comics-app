@@ -1,6 +1,8 @@
 import React from 'react';
 import { Button } from 'antd';
 import './ComicCard.css';
+import { useDispatch, useSelector } from 'react-redux';
+import { comicActions } from '../../services/comics/comicSlice';
 
 /**
  * NEW
@@ -8,12 +10,14 @@ import './ComicCard.css';
  * APPROVED
  */
 
-const ComicCard = ({
-  comic,
-  onSelect,
-}) => {
-  const { title, id, description, thumbnail, } = comic;
-  
+const ComicCard = ({ comic, onSelect }) => {
+
+  const { title, id, description, thumbnail, } = comic
+
+  const { comics } = useSelector(state => state.comics)
+
+  const dispatch = useDispatch()
+
   let message = 'A revisar';
   let buttonType = 'default';
 
@@ -33,8 +37,38 @@ const ComicCard = ({
   }
 
   const onClick = () => {
-    if (onSelect) {
-      onSelect(comic);
+    let newState
+    switch (comic.state) {
+      case 'NEW':
+        comic.state = 'REVIEW';
+        newState = {
+          ...comics,
+          newComics: comics.newComics.filter(i => i.id !== comic.id),
+          reviewComics: [...comics.reviewComics, comic]
+        }
+        dispatch(comicActions.setComics(newState))
+        break;
+      case 'REVIEW':
+        comic.state = 'APPROVED';
+        newState = {
+          ...comics,
+          reviewComics: comics.reviewComics.filter(i => i.id !== comic.id),
+          approvedComics: [...comics.approvedComics, comic]
+        }
+        dispatch(comicActions.setComics(newState))
+        break;
+      case 'APPROVED':
+        comic.state = 'REVIEW';
+        newState = {
+          ...comics,
+          approvedComics: comics.approvedComics.filter(i => i.id !== comic.id),
+          reviewComics: [comic, ...comics.reviewComics]
+        }
+        dispatch(comicActions.setComics(newState))
+        break;
+      default:
+        comic.state = '';
+        break;
     }
   }
 
