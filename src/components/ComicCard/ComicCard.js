@@ -9,7 +9,7 @@ const ComicCard = ({ comic, onSelect }) => {
 
   const [updateModalVisible, setUpdateModalVisible] = useState(false)
 
-  const { title, id, description, thumbnail, state } = comic
+  const { title, id, description, thumbnail, state, imageUrl } = comic
 
   const { comics } = useSelector(state => state.comics)
 
@@ -69,8 +69,6 @@ const ComicCard = ({ comic, onSelect }) => {
     }
   }
 
-  const image = `${thumbnail?.path}.${thumbnail?.extension}`;
-
   const deleteComic = () => {
     dispatch(comicActions.setComics({
       ...comics,
@@ -82,7 +80,7 @@ const ComicCard = ({ comic, onSelect }) => {
     <div className='comic-card-container'>
       <div className='image'>
         <img
-          src={image || 'https://e.rpp-noticias.io/xlarge/2020/04/26/182718_933313.jpg'}
+          src={imageUrl || 'https://e.rpp-noticias.io/xlarge/2020/04/26/182718_933313.jpg'}
           alt='Comic Marvel'
           width='200px'
         />

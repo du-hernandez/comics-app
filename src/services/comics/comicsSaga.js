@@ -1,20 +1,16 @@
 import { takeLatest, all, put } from 'redux-saga/effects';
-import { Api } from '../../common/api';
-import { comicActions } from './comicSlice'
 
-const fetchComics = async () => await Api()
-  .then(res => res.json())
-  .catch(err => {
-    console.error("-----> ", err);
-    return err;
-  });
+import { comicActions } from './comicSlice'
+import Api from '../../common/api';
+import { message } from 'antd';
 
 function* getComics() {
-  const response = yield fetchComics();
+  const response = yield Api.get('/comic/all')
 
-  if (response) {
+  console.log("RES", response)
+  if (response.ok) {
     const data = {
-      newComics: response.data.results,
+      newComics: response.payload,
       reviewComics: [],
       approvedComics: []
     }
@@ -23,10 +19,23 @@ function* getComics() {
     yield put(comicActions.getComicsFail({ codigo: '', message: '' }))
   }
 }
+function* addComic({ payload }) {
+  const { values, hide } = payload
+  const response = yield Api.post('/comic', values)
+
+  if (response.ok) {
+    yield put(comicActions.getComics())
+    hide()
+    message.success("Comic registrado correctamente! ✅")
+  } else {
+    yield put(comicActions.getComicsFail({ codigo: '', message: response.payload.message }))
+    message.error("Comic no registrado correctamente! 💔 " + response.payload.message)
+  }
+}
 
 function* actionWatcher() {
-  yield takeLatest(comicActions.getComics, getComics);
-  // yield takeLatest(ComicsTypes.GET_FILMS, getFilms);
+  yield takeLatest(comicActions.getComics, getComics)
+  yield takeLatest(comicActions.addComic, addComic)
 }
 
 export default function* comicsSaga() {

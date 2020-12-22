@@ -23,10 +23,13 @@ export const AdminModal = ({ comic, visible, setVisible, title }) => {
       dispatch(comicActions.setComics({ ...comics, reviewComics }))
       message.success("Comic actualizado!")
     } else {
-      dispatch(comicActions.addComic(values))
-      message.success("Comic agregado!")
+      dispatch(comicActions.addComic({ values, hide }))
     }
+  }
+
+  const hide = () => {
     setVisible(false)
+    form.resetFields()
   }
 
   const footerModal = [
@@ -58,9 +61,6 @@ export const AdminModal = ({ comic, visible, setVisible, title }) => {
         >
           <Input />
         </Form.Item>
-        <Form.Item name="id" label="Id" rules={validation.schema.id}>
-          <InputNumber />
-        </Form.Item>
         <Form.Item
           name="description"
           label="Descripción"
@@ -69,16 +69,9 @@ export const AdminModal = ({ comic, visible, setVisible, title }) => {
           <Input />
         </Form.Item>
         <Form.Item
-          name={["thumbnail", "path"]}
-          label="Path"
-          rules={validation.schema.path}
-        >
-          <Input />
-        </Form.Item>
-        <Form.Item
-          name={["thumbnail", "extension"]}
-          label="Extensión"
-          rules={validation.schema.extension}
+          name={"imageUrl"}
+          label="Ruta imagen"
+          rules={validation.schema.imageUrl}
         >
           <Input />
         </Form.Item>

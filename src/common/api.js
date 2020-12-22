@@ -1,77 +1,100 @@
-const API_KEY = '9ff9d2f39bd02811ef9979c728238e0a';
-const HASH = '76a825498a9afba1521653f41fcbaf75';
-const TS = '1';
+const apiUrl = 'http://localhost:4000'
+export class Api {
 
-// // const BASE_URL = 'http://gateway.marvel.com/v1/public/comics';
+  post(url, data, formData) {
+    let dataBody
 
-// // const params = [
-// //   { name: 'ts', value: TS },
-// //   { name: 'apikey', value: API_KEY },
-// //   { name: 'hash', value: HASH }
-// // ];
+    if (formData) {
+      dataBody = new FormData();
+      Object.keys(data).map(key => {
 
-// // export const Api = async () => {
-// //   let a = '?';
-// //   params.map(i => {
-// //     a = a + `&${i.name}=${i.value}`
-// //   })
-// //   return await fetch(BASE_URL + a)
-// // };
+        if (!Array.isArray(data[key])) {
+          const isFile = data[key] && data[key].size
+          const isJson = typeof data[key] === 'object'
 
+          dataBody.append(key, isFile || !isJson ? data[key] : JSON.stringify(data[key]));
+        } else
+          data[key].forEach(item => {
+            const isFile = item && item.size
+            const isJson = typeof item === 'object'
 
-// class Api {
-//   constructor() {
-//     this.API_TOKEN = null;
-//     this.CLIENT = null;
-//     this.BASE_URL = process.env.REACT_APP_API_ENDPOINT;
-//   }
+            dataBody.append(key, isFile || !isJson ? item : JSON.stringify(item))
+          })
+      })
+    } else
+      dataBody = JSON.stringify(data);
 
-//   init = () => {
-//     // this.API_TOKEN = getCookie("ACCESS_TOKEN"); 
-//     let headers = {
-//       Accept: "application/json",
-//     };
+    return fetch(`${apiUrl}${url}`, {
+      method: 'POST',
+      headers: (formData ? {
+      } : {
+          'Accept': 'application/json',
+          'Content-type': 'application/json',
+        }),
+      body: dataBody
+    }).then(async response => {
+      response.payload = await response.json()
+      return response;
+    }).catch(err => err)
+  }
 
-//     if (this.API_TOKEN) {
-//       headers.Authorization = `Bearer ${this.API_TOKEN}`;
-//     }
+  put(url, data, formData) {
+    let dataBody
 
-//     this.CLIENT = axios.create({
-//       baseURL: this.BASE_URL,
-//       timeout: 31000,
-//       headers: headers,
-//     });
+    if (formData) {
+      dataBody = new FormData();
+      Object.keys(data).map(key => {
 
-//     return this.CLIENT;
-//   }
+        if (!Array.isArray(data[key])) {
+          const isFile = data[key] && data[key].size
+          const isJson = typeof data[key] === 'object'
 
-//   getComics = (params) => {
-//     return this.init().get("/", {
-//       params: {
-//         ts: TS,
-//         apikey: API_KEY,
-//         hash: HASH
-//     } });
-//   };
-  
-// }
+          dataBody.append(key, isFile || !isJson ? data[key] : JSON.stringify(data[key]));
+        } else
+          data[key].forEach(item => {
+            const isFile = item && item.size
+            const isJson = typeof item === 'object'
 
-// const api = new Api();
+            dataBody.append(key, isFile || !isJson ? item : JSON.stringify(item))
+          })
+      })
+    } else
+      dataBody = JSON.stringify(data);
 
-// export default api;
+    return fetch(`${apiUrl}${url}`, {
+      method: 'PUT',
+      headers: (formData ? {
+      } : {
+          'Accept': 'application/json',
+          'Content-type': 'application/json'
+        }),
+      body: dataBody
+    }).then(async response => {
+      response.payload = await response.json()
+      return response;
+    }).catch(err => err)
+  }
 
-const BASE_URL = 'http://gateway.marvel.com/v1/public/comics';
+  delete(url) {
+    return fetch(`${apiUrl}${url}`, {
+      method: 'DELETE'
+    }).then(async response => {
+      response.payload = await response.json()
+      return response;
+    }).catch(err => err)
+  }
 
-const params = [
-  { name: 'ts', value: TS },
-  { name: 'apikey', value: API_KEY },
-  { name: 'hash', value: HASH }
-];
+  get(url, params) {
+    url = new URL(`${apiUrl}${url}`);
+    if (params)
+      Object.keys(params).forEach(key => url.searchParams.append(key, params[key]))
+    return fetch(url, {
+      method: 'GET'
+    }).then(async response => {
+      response.payload = await response.json()
+      return response;
+    }).catch(err => err)
+  }
+}
 
-export const Api = async () => {
-  let a = '?';
-  params.map(i => {
-    a = a + `&${i.name}=${i.value}`
-  })
-  return await fetch(BASE_URL + a)
-};
+export default new Api();

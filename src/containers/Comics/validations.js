@@ -1,26 +1,29 @@
 export const schema = {
-  title: [ {
+  title: [{
     required: true,
     min: 3,
     max: 100
-  } ],
-  id: [ {
+  }],
+  id: [{
     required: true,
     // type: 'regexp',
     pattern: new RegExp(/^([0-9])*$/),
     message: 'Sólo números'
-  } ],
-  description: [ {
+  }],
+  description: [{
     required: true,
     min: 3,
     max: 1000
-  } ],
-  path: [ {
+  }],
+  imageUrl: [{
     required: true,
-  } ],
-  extension: [ {
+  }],
+  path: [{
+    required: true,
+  }],
+  extension: [{
     required: true
-  } ]
+  }]
 };
 
 export const messages = {
